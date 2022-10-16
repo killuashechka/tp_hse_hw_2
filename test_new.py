@@ -1,5 +1,6 @@
 import unittest
 import func
+import math
 
 class Test(unittest.TestCase):
   def test_new(self):
