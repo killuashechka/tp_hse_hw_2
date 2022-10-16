@@ -53,10 +53,8 @@ jobs:
       - uses: actions/checkout@v2 
       - name: Install deps
         run: | 
-          cd $GITHUB_WORKSPACE      
-      - name: Test_max
-        if: ${{ always() }}
-        run: python -m unittest test_max
+          cd $GITHUB_WORKSPACE
+          python test_max.py
       - if: ${{failure()}}
         name: "telegram Notification Max"
         uses: "appleboy/telegram-action@master"
