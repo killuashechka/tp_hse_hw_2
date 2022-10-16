@@ -1,0 +1,116 @@
+name: Autotest
+ 
+on: 
+  push: 
+    branches: [ main, develop ] 
+  pull_request: 
+    branches: [ main, develop ] 
+  workflow_dispatch: 
+ 
+jobs:
+  on_build_actions: 
+    runs-on: ubuntu-latest 
+    steps: 
+      - uses: actions/checkout@v2 
+      - name: "Edit config"
+        run: git config --global user.email "rgrigory8@gmail.com" && git config --global user.name "killuashechka"
+      - name: Install dependencies 
+        run: | 
+          cd $GITHUB_WORKSPACE 
+          python test.py
+      - if: ${{failure()}}
+        name: "telegram Notification"
+        uses: "appleboy/telegram-action@master"
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          args: Тесты пройдены не успешно
+      - if: ${{success()}}
+        name: "telegram Notification"
+        uses: "appleboy/telegram-action@master"
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          args: Тесты пройдены успешно
+  build-Test_min:
+    steps: 
+      - uses: actions/checkout@v2 
+      - name: Install deps
+        run: | 
+          cd $GITHUB_WORKSPACE 
+          python test_min.py
+      - if: ${{failure()}}
+        name: "telegram Notification Min"
+        uses: "appleboy/telegram-action@master"
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          args: Ошибка в функции нахождения минимума
+  build-Test_max:
+    runs-on: ubuntu-latest 
+    steps:
+      - uses: actions/checkout@v2 
+      - name: Install deps
+        run: | 
+          cd $GITHUB_WORKSPACE      
+      - name: Test_max
+        if: ${{ always() }}
+        run: python -m unittest test_max
+      - if: ${{failure()}}
+        name: "telegram Notification Max"
+        uses: "appleboy/telegram-action@master"
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          args: Ошибка в функции нахождения максимума
+  build-Test_sum:
+    runs-on: ubuntu-latest 
+    steps:
+      - uses: actions/checkout@v2 
+      - name: Install deps
+        run: | 
+          cd $GITHUB_WORKSPACE  
+      - name: Test_sum
+        if: ${{ always() }}
+        run: python -m unittest test_sum
+      - if: ${{failure()}}
+        name: "telegram Notification Sum"
+        uses: "appleboy/telegram-action@master"
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          args: Ошибка в функции нахождения суммы
+  build-Test_mult:
+    runs-on: ubuntu-latest 
+    steps:
+      - uses: actions/checkout@v2 
+      - name: Install deps
+        run: | 
+          cd $GITHUB_WORKSPACE      
+      - name: Test_mult
+        if: ${{ always() }}
+        run: python -m unittest test_mult
+      - if: ${{failure()}}
+        name: "telegram Notification Mult"
+        uses: "appleboy/telegram-action@master"
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          args: Ошибка в функции нахождения произведения
+  build-Test_new:
+    runs-on: ubuntu-latest 
+    steps:
+      - uses: actions/checkout@v2 
+      - name: Install deps
+        run: | 
+          cd $GITHUB_WORKSPACE      
+      - name: Test_new
+        if: ${{ always() }}
+        run: python -m unittest test_new
+      - if: ${{failure()}}
+        name: "telegram Notification New"
+        uses: "appleboy/telegram-action@master"
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          args: Ошибка в функции нахождения факториала
