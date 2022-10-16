@@ -33,6 +33,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           args: Тесты пройдены успешно
   build-Test_min:
+    runs-on: ubuntu-latest
     steps: 
       - uses: actions/checkout@v2 
       - name: Install deps
