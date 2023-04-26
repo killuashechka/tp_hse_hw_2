@@ -21,3 +21,4 @@ class Arithmetic:
         for num in numbers:
             mult_num *= num
         return mult_num
+    
